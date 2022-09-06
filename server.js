@@ -6,6 +6,8 @@ import "express-async-errors";
 import morgan from "morgan";
 import cors from "cors";
 import { dirname } from "path";
+import { fileURLToPath } from "url";
+import path from "path";
 
 import mongoSanitize from "express-mongo-sanitize";
 
