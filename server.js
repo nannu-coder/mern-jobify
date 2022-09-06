@@ -5,6 +5,7 @@ dotenv.config();
 import "express-async-errors";
 import morgan from "morgan";
 import cors from "cors";
+import { dirname } from "path";
 
 import mongoSanitize from "express-mongo-sanitize";
 
@@ -25,6 +26,11 @@ if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// only when ready to deploy
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+
 app.use(express.json());
 app.use(mongoSanitize());
 app.use(cors());
@@ -35,9 +41,10 @@ app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+// only when ready to deploy
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 
 const port = process.env.PORT || 5000;
 
