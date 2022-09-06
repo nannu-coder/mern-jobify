@@ -128,7 +128,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SETUP_USER_BEGIN });
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/v1/auth/${endPoint}`,
+        `/api/v1/auth/${endPoint}`,
         currentUser
       );
       console.log(data);
@@ -157,10 +157,7 @@ const AppProvider = ({ children }) => {
   const updateUser = async (currentUser) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
-      const { data } = await authFetch.patch(
-        "http://localhost:5000/auth/updateUser",
-        currentUser
-      );
+      const { data } = await authFetch.patch("/auth/updateUser", currentUser);
 
       const { user, location, token } = data;
 
